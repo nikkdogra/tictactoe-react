@@ -3,7 +3,7 @@ import Board from "./Board";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { clearAll } from "../redux/slices/boardSlice";
-import { setInitialScore } from "../redux/slices/playerSlice";
+import { clearPlayers, setInitialScore } from "../redux/slices/playerSlice";
 import { setInitialTurn } from "../redux/slices/turnSlice";
 import SwitchPlayers from "./SwitchPlayers";
 import { useState } from "react";
@@ -20,6 +20,9 @@ export default function Container() {
     dispatch(clearAll());
     dispatch(setInitialScore());
     dispatch(setInitialTurn());
+  };
+  const handleClearPlayers = () => {
+    dispatch(clearPlayers());
   };
   return (
     <div className="flex h-full w-full items-center justify-center md:container md:mx-auto">
@@ -46,7 +49,7 @@ export default function Container() {
           <Button
             color="primary"
             className="text-secondary"
-            onPress={handleRestart}
+            onPress={handleClearPlayers}
             size="sm"
           >
             Clear Players

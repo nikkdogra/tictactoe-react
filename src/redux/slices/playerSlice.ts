@@ -32,6 +32,9 @@ const playersSlice = createSlice({
     setOPlayer: (state, action: PayloadAction<string | null>) => {
       state.value.O.player = action.payload;
     },
+    clearPlayers: state => {
+      state.value.O.player = state.value.X.player = null;
+    },
   },
 });
 
@@ -42,4 +45,5 @@ export const {
   setInitialScore,
   setOPlayer,
   setXPlayer,
+  clearPlayers,
 } = playersSlice.actions;
