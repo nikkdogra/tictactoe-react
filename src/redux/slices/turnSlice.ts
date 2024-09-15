@@ -4,10 +4,12 @@ import { turnDefaultValue } from "../../default-values";
 
 interface IInitialState {
   value: ITurn;
+  isXTurnFirst: boolean;
 }
 
 const initialState: IInitialState = {
   value: turnDefaultValue,
+  isXTurnFirst: false,
 };
 
 const turnSlice = createSlice({
@@ -18,7 +20,8 @@ const turnSlice = createSlice({
       state.value = state.value === "O" ? "X" : "O";
     },
     setInitialTurn: state => {
-      state.value = turnDefaultValue;
+      state.value = state.isXTurnFirst ? "O" : "X";
+      state.isXTurnFirst = state.value === "X";
     },
   },
 });

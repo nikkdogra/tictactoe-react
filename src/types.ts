@@ -13,7 +13,7 @@ export type IBoard = [
   IBoardItem,
 ];
 
-export interface IScore {
-  O: number;
-  X: number;
+export interface IPlayer {
+  score: number;
+  player: null | string;
 }

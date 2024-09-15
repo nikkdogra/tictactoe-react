@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 * {
-  @apply font-poppins m-0 box-border p-0;
+  @apply m-0 box-border p-0 font-poppins;
   /* @apply border-1 border-red-500; */
 }

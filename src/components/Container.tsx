@@ -3,13 +3,20 @@ import Board from "./Board";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { clearAll } from "../redux/slices/boardSlice";
-import { setInitialScore } from "../redux/slices/scoreSlice";
+import { setInitialScore } from "../redux/slices/playerSlice";
 import { setInitialTurn } from "../redux/slices/turnSlice";
+import SwitchPlayers from "./SwitchPlayers";
+import { useState } from "react";
 
 export default function Container() {
-  const score = useAppSelector(state => state.score.value);
+  const [isPlayersSwitched, setIsPlayersSwitched] = useState(false);
+  const oScore = useAppSelector(state => state.players.value.O.score);
+  const oPlayer = useAppSelector(state => state.players.value.O.player);
+  const xScore = useAppSelector(state => state.players.value.X.score);
+  const xPlayer = useAppSelector(state => state.players.value.X.player);
+
   const dispatch = useAppDispatch();
-  const handleClearAll = () => {
+  const handleRestart = () => {
     dispatch(clearAll());
     dispatch(setInitialScore());
     dispatch(setInitialTurn());
@@ -20,30 +27,44 @@ export default function Container() {
         <h1 className="mb-8 text-center text-4xl font-medium text-primary">
           Tic Tac Toe Game
         </h1>
+        <SwitchPlayers
+          onSwitch={() => setIsPlayersSwitched(!isPlayersSwitched)}
+          isPlayersSwitched={isPlayersSwitched}
+        />
         <div className="py-8">
           <Board />
         </div>
-        <div className={clsx("flex items-center justify-center py-4")}>
+        <div className={clsx("flex items-center justify-center gap-8")}>
           <Button
             color="primary"
             className="text-secondary"
-            onPress={handleClearAll}
+            onPress={handleRestart}
+            size="sm"
           >
-            Clear All Fields
+            Restart Game
+          </Button>
+          <Button
+            color="primary"
+            className="text-secondary"
+            onPress={handleRestart}
+            size="sm"
+          >
+            Clear Players
           </Button>
         </div>
         <div
           className={clsx(
-            "flex items-center justify-center gap-8 py-4 text-primary",
+            "mt-4 flex items-center justify-between text-primary",
+            isPlayersSwitched ? "flex-row-reverse" : "flex-row",
           )}
         >
           <p>
-            O's player score:{" "}
-            <span className="inline-block w-[25px] font-bold">{score.O}</span>
+            {oPlayer ?? "O player"}'s score:{" "}
+            <span className="inline-block w-[25px] font-bold">{oScore}</span>
           </p>
           <p>
-            X's player score:{" "}
-            <span className="inline-block w-[25px] font-bold">{score.X}</span>
+            {xPlayer ?? "X player"}'s score:{" "}
+            <span className="inline-block w-[25px] font-bold">{xScore}</span>
           </p>
         </div>
       </div>

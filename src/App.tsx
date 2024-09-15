@@ -1,15 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Container from "./components/Container";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { winPossibilities } from "./config";
-import { incrementOScore, incrementXScore } from "./redux/slices/scoreSlice";
-import { clearAll } from "./redux/slices/boardSlice";
+import { incrementOScore, incrementXScore } from "./redux/slices/playerSlice";
+import {
+  clearAll,
+  freezeBoard,
+  unFreezeBoard,
+} from "./redux/slices/boardSlice";
+import { setInitialTurn } from "./redux/slices/turnSlice";
+import { addDelay } from "./utils";
 // import useDarkMode from "use-dark-mode";
 
 export default function App() {
   const dispatch = useAppDispatch();
   const board = useAppSelector(state => state.board.value);
+  const timerId = useRef<null | number>(null);
 
   const darkMode = false;
 
@@ -28,8 +35,10 @@ export default function App() {
     return winner;
   };
 
-  const restartGame = () => {
+  const clearBoard = () => {
     dispatch(clearAll());
+    dispatch(setInitialTurn());
+    dispatch(unFreezeBoard());
   };
 
   const isBoardFilled = (): boolean => {
@@ -39,14 +48,16 @@ export default function App() {
   const checkWin = () => {
     const winner = getWinner();
     if (winner !== null) {
+      dispatch(freezeBoard());
       if (winner === "O") {
         dispatch(incrementOScore());
       } else {
         dispatch(incrementXScore());
       }
-      restartGame();
+      addDelay(clearBoard, timerId, 1000);
     } else if (isBoardFilled()) {
-      restartGame();
+      dispatch(freezeBoard());
+      addDelay(clearBoard, timerId, 1000);
     }
   };
 

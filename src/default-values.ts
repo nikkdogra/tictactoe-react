@@ -1,4 +1,4 @@
-import { IBoard, IScore, ITurn } from "./types";
+import { IBoard, ITurn } from "./types";
 
 export const boardDefaultValue: IBoard = [
   null,
@@ -12,9 +12,15 @@ export const boardDefaultValue: IBoard = [
   null,
 ];
 
-export const scoreDefaultValue: IScore = {
-  X: 0,
-  O: 0,
+export const playersDefaultValue = {
+  O: {
+    score: 0,
+    player: null,
+  },
+  X: {
+    score: 0,
+    player: null,
+  },
 };
 
 export const turnDefaultValue: ITurn = "O";
