@@ -8,10 +8,14 @@ interface IBoxProps {
 }
 
 export default function Box({ index }: Readonly<IBoxProps>) {
+  //states
   const board = useAppSelector(state => state.board.value);
   const turn = useAppSelector(state => state.turn.value);
 
+  //dispatch
   const dispatch = useAppDispatch();
+
+  // handlers
   const handleClick = () => {
     if (board[index] === null) {
       dispatch(fill({ index: index, value: turn }));

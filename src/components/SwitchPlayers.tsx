@@ -9,7 +9,7 @@ interface ISwitchPlayersProps {
   onSwitch: () => void;
 }
 
-const inputClasses = {
+const INPUT_SIMILAR_Classes = {
   inputWrapper: "!bg-transparent border-1 !border-primary",
   input: "text-secondary font-light text-gray-400",
 };
@@ -18,10 +18,14 @@ export default function SwitchPlayers({
   isPlayersSwitched,
   onSwitch,
 }: Readonly<ISwitchPlayersProps>) {
-  const dispatch = useAppDispatch();
+  //states
   const oPlayer = useAppSelector(state => state.players.value.O.player);
   const xPlayer = useAppSelector(state => state.players.value.X.player);
 
+  //dispatch
+  const dispatch = useAppDispatch();
+
+  //handlers
   const handleClick = () => {
     onSwitch();
   };
@@ -36,7 +40,7 @@ export default function SwitchPlayers({
         value={oPlayer ?? ""}
         onValueChange={value => dispatch(setOPlayer(value || null))}
         radius="none"
-        classNames={inputClasses}
+        classNames={INPUT_SIMILAR_Classes}
         placeholder="Enter O's Player Name"
       />
       <Button size="sm" color="primary" onPress={handleClick}>
@@ -46,7 +50,7 @@ export default function SwitchPlayers({
         value={xPlayer ?? ""}
         onValueChange={value => dispatch(setXPlayer(value || null))}
         radius="none"
-        classNames={inputClasses}
+        classNames={INPUT_SIMILAR_Classes}
         placeholder="Enter X's Player Name"
       />
     </div>

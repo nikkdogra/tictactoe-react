@@ -8,14 +8,20 @@ import { setInitialTurn } from "../redux/slices/turnSlice";
 import SwitchPlayers from "./SwitchPlayers";
 import { useState } from "react";
 
+const SCORE_SIMILAR_CLASSES = "inline-block w-[25px] font-bold";
+
 export default function Container() {
+  //states
   const [isPlayersSwitched, setIsPlayersSwitched] = useState(false);
   const oScore = useAppSelector(state => state.players.value.O.score);
   const oPlayer = useAppSelector(state => state.players.value.O.player);
   const xScore = useAppSelector(state => state.players.value.X.score);
   const xPlayer = useAppSelector(state => state.players.value.X.player);
 
+  //dispatch
   const dispatch = useAppDispatch();
+
+  //handlers
   const handleRestart = () => {
     dispatch(clearAll());
     dispatch(setInitialScore());
@@ -63,11 +69,11 @@ export default function Container() {
         >
           <p>
             {oPlayer ?? "O player"}'s score:{" "}
-            <span className="inline-block w-[25px] font-bold">{oScore}</span>
+            <span className={clsx(SCORE_SIMILAR_CLASSES)}>{oScore}</span>
           </p>
           <p>
             {xPlayer ?? "X player"}'s score:{" "}
-            <span className="inline-block w-[25px] font-bold">{xScore}</span>
+            <span className={clsx(SCORE_SIMILAR_CLASSES)}>{xScore}</span>
           </p>
         </div>
       </div>
