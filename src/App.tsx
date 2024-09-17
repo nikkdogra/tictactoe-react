@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Container from "./components/Container";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
@@ -14,13 +14,20 @@ import { addDelay } from "./utils";
 // import useDarkMode from "use-dark-mode";
 
 export default function App() {
-  const dispatch = useAppDispatch();
+  //states
   const board = useAppSelector(state => state.board.value);
+
+  //dispatch
+  const dispatch = useAppDispatch();
+
+  //refs
   const timerId = useRef<null | number>(null);
 
+  //constants
   const darkMode = false;
 
-  const getWinner = () => {
+  //functions
+  const getWinner = useCallback(() => {
     let winner = null;
     for (const element of winPossibilities) {
       if (
@@ -33,19 +40,19 @@ export default function App() {
       }
     }
     return winner;
-  };
+  }, [board]);
 
-  const clearBoard = () => {
+  const clearBoard = useCallback(() => {
     dispatch(clearAll());
     dispatch(setInitialTurn());
     dispatch(unFreezeBoard());
-  };
+  }, [dispatch]);
 
-  const isBoardFilled = (): boolean => {
+  const isBoardFilled = useCallback((): boolean => {
     return board.filter(box => box === null).length === 0;
-  };
+  }, [board]);
 
-  const checkWin = () => {
+  const checkWin = useCallback(() => {
     const winner = getWinner();
     if (winner !== null) {
       dispatch(freezeBoard());
@@ -59,11 +66,12 @@ export default function App() {
       dispatch(freezeBoard());
       addDelay(clearBoard, timerId, 1000);
     }
-  };
+  }, [clearBoard, dispatch, getWinner, isBoardFilled]);
 
+  //effects
   useEffect(() => {
     checkWin();
-  }, [board]);
+  }, [board, checkWin]);
   return (
     <main
       className={clsx(
