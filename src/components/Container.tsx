@@ -13,6 +13,7 @@ const SCORE_SIMILAR_CLASSES = "inline-block w-[25px] font-bold";
 export default function Container() {
   //states
   const [isPlayersSwitched, setIsPlayersSwitched] = useState(false);
+  const mode = useAppSelector(state => state.mode.value);
   const oScore = useAppSelector(state => state.players.value.O.score);
   const oPlayer = useAppSelector(state => state.players.value.O.player);
   const xScore = useAppSelector(state => state.players.value.X.score);
@@ -20,6 +21,11 @@ export default function Container() {
 
   //dispatch
   const dispatch = useAppDispatch();
+
+  //constants
+  const isFriendMode = mode === "friend";
+  const player1 = isFriendMode ? (oPlayer ?? "O player") : "You";
+  const player2 = isFriendMode ? (xPlayer ?? "X player") : "Computer";
 
   //handlers
   const handleRestart = () => {
@@ -36,10 +42,12 @@ export default function Container() {
         <h1 className="mb-8 text-center text-4xl font-medium text-primary">
           Tic Tac Toe Game
         </h1>
-        <SwitchPlayers
-          onSwitch={() => setIsPlayersSwitched(!isPlayersSwitched)}
-          isPlayersSwitched={isPlayersSwitched}
-        />
+        {isFriendMode && (
+          <SwitchPlayers
+            onSwitch={() => setIsPlayersSwitched(!isPlayersSwitched)}
+            isPlayersSwitched={isPlayersSwitched}
+          />
+        )}
         <div className="py-8">
           <Board />
         </div>
@@ -52,14 +60,16 @@ export default function Container() {
           >
             Restart Game
           </Button>
-          <Button
-            color="primary"
-            className="text-secondary"
-            onPress={handleClearPlayers}
-            size="sm"
-          >
-            Clear Players
-          </Button>
+          {isFriendMode && (
+            <Button
+              color="primary"
+              className="text-secondary"
+              onPress={handleClearPlayers}
+              size="sm"
+            >
+              Clear Players
+            </Button>
+          )}
         </div>
         <div
           className={clsx(
@@ -68,11 +78,11 @@ export default function Container() {
           )}
         >
           <p>
-            {oPlayer ?? "O player"}'s score:{" "}
+            {player1}:{" "}
             <span className={clsx(SCORE_SIMILAR_CLASSES)}>{oScore}</span>
           </p>
           <p>
-            {xPlayer ?? "X player"}'s score:{" "}
+            {player2}:{" "}
             <span className={clsx(SCORE_SIMILAR_CLASSES)}>{xScore}</span>
           </p>
         </div>

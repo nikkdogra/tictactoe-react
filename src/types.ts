@@ -17,3 +17,5 @@ export interface IPlayer {
   score: number;
   player: null | string;
 }
+
+export type IMode = "computer" | "friend";
