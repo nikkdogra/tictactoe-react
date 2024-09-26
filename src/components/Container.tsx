@@ -8,7 +8,7 @@ import { setInitialTurn } from "../redux/slices/turnSlice";
 import SwitchPlayers from "./SwitchPlayers";
 import { useState } from "react";
 
-const SCORE_SIMILAR_CLASSES = "inline-block w-[25px] font-bold";
+const SCORE_SIMILAR_CLASSES = "inline-block w-[25px] font-bold text-lg";
 
 export default function Container() {
   //states
@@ -73,7 +73,7 @@ export default function Container() {
         </div>
         <div
           className={clsx(
-            "mt-4 flex items-center justify-between text-primary",
+            "mt-4 flex w-full items-center justify-between text-primary",
             isPlayersSwitched ? "flex-row-reverse" : "flex-row",
           )}
         >

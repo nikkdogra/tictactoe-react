@@ -103,12 +103,22 @@ export default function Board() {
   //effects
   useEffect(() => {
     checkWin();
+    return () => {
+      if (clearBoardTimerId.current) {
+        clearTimeout(clearBoardTimerId.current);
+      }
+    };
   }, [board, checkWin]);
 
   useEffect(() => {
     if (mode === "computer" && turn === "X") {
       takeComputerTurn();
     }
+    return () => {
+      if (computerTurnTimerId.current) {
+        clearTimeout(computerTurnTimerId.current);
+      }
+    };
   }, [mode, takeComputerTurn, turn]);
   return (
     <Card className="mx-auto flex h-[200px] w-[240px] flex-col gap-[1px] rounded-none bg-secondary">
